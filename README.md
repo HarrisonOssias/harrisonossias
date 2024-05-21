@@ -1,9 +1,5 @@
 ### Hi there 👋
 
-
-
-Here are some ideas to get you started:
-
 - 🔭 I’m currently working on: 
   * Capstone Project: Self Detecting and Scalable Mesh IoT Network
   * Personal Website @ harrisonossias.com
