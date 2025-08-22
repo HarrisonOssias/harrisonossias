@@ -1,7 +1,8 @@
 ### Hi there 👋
 
 - 🔭 I’m currently working on: 
-  * Capstone Project: Self Detecting and Scalable Mesh IoT Network
+  * R.A.N.G.E.R - Robot Assistant for Navigation, Guidance, and Enforcement of Roads
+  * FFPN Mesh - Forest Fire Prevention Network based on LoRa Mesh
   * Personal Website @ harrisonossias.com
 ---
 - 🌱 I’m currently learning GraphQL, AWS Lambda, Jenkins, SCSS
