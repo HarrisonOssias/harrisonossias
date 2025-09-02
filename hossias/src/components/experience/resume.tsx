@@ -1,325 +1,121 @@
-import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react'
+import type { ExperienceItem } from './TYPES_exp'
+import { ExperienceDropdown } from './exp_dropdown'
 
 export const Resume = () => {
+    const experiences: ExperienceItem[] = [
+        {
+            id: 'hyperion',
+            title: 'Full Stack Software Engineer (Team Lead)',
+            company: 'Hyperion Sensors Inc.',
+            location: 'Toronto, ON',
+            period: '04/2022 - Present',
+            logo: '/Hyperion.jpg',
+            technologies:
+                'TypeScript, React (Next.js), Python (Django), Express.js, AWS, Tailwind CSS, Kubernetes, PostgreSQL, Apache Kafka, REST APIs, GraphQL',
+            responsibilities: [
+                'Led end-to-end development of flagship SaaS platform Helios as Principal Developer',
+                'Oversaw 14 production environments supporting 6 major electricity distributors',
+                'Designed backend REST APIs and GraphQL systems, modernizing legacy Apache Tomcat codebase',
+                'Architected authentication flows integrating LDAP and Active Directory with Auth0 and AWS Cognito',
+                'Transitioned data replication to Kafka Streams for efficient sensor data transmission',
+            ],
+            borderColor: 'border-orange-500',
+            link: 'https://www.hyperionsensors.com/',
+        },
+        {
+            id: 'blueocean',
+            title: 'Contract Software & Firmware Engineer',
+            company: 'Blue Ocean Technologies Inc.',
+            location: 'Toronto, ON',
+            period: '01/2025 - Present',
+            logo: '/blue_ocean.png',
+            technologies:
+                'C/C++, Python, ARM Cortex-M7/M5, React, PostgreSQL, Tailwind CSS, Electron',
+            responsibilities: [
+                'Converted flagship OT application to Chromium-based (Electron) React application in 3 months',
+                'Ported power management firmware from Teensy 3.5 to 4.0 microcontroller architecture',
+                'Integrated communication protocols including Protocol Buffer APIs and serial interfaces',
+            ],
+            borderColor: 'border-blue-300',
+            link: 'https://blueoceantechnologies.ca/',
+        },
+        {
+            id: 'broadridge',
+            title: 'Associate Software Engineer Co-op',
+            company: 'Broadridge',
+            location: 'Toronto, ON',
+            period: '05/2021 - 12/2021',
+            logo: '/Broadridge.jpg',
+            technologies:
+                'Java, React, TensorFlow, Spring Boot (REST), SQLite, LDAP, Jenkins, GitHub Actions',
+            responsibilities: [
+                'Developed client-release scheduling and system monitoring tool for AWS clusters',
+                'Implemented highly normalized SQL schemas for data integrity',
+            ],
+            borderColor: 'border-blue-600',
+            link: 'https://www.broadridge.com/',
+        },
+        {
+            id: 'ibm',
+            title: 'DevOps/SRE Cloud Developer Co-op',
+            company: 'IBM',
+            location: 'Ottawa/Toronto, ON',
+            period: '05/2020 - 08/2020',
+            logo: '/IBM.png',
+            technologies:
+                'PowerShell, Linux (Ubuntu, Fedora) Python (Flask), Ansible, Jenkins, IBM Cloud',
+            responsibilities: [
+                'Built updates to IBM Planning Analytics suite and deployed in Kubernetes',
+                'Combined Python and PowerShell scripts for upkeep of performance monitors on environments for major clients, reducing downtime by 2.5%',
+                'Deployed and managed over 60 production and development environments on Active Directory and various bare-metal Linux systems using Ansible Tower',
+            ],
+            borderColor: 'border-blue-800',
+            link: 'https://www.ibm.com/ca-en',
+        },
+        {
+            id: 'ey',
+            title: 'Data Analyst Intern (tenthree | labs)',
+            company: 'Ernst & Young (EY)',
+            location: 'Toronto, ON',
+            period: '01/2020 - 04/2020',
+            logo: '/EY.png',
+            technologies:
+                'Alteryx, PostgreSQL, Microsoft SQL Server, Python, C++, HTML',
+            responsibilities: [
+                'Built support applications in C++ and Python to handle financial statement cleansing, validation, and year-to-year rollover for 39 multi-national corporation audits',
+                'Deployed cleansing pipelines in Alteryx utilizing PostgreSQL and Microsoft SQL Server as data-lakes',
+                'Developed custom frontend for audit team SharePoint to enhance auditor visibility',
+            ],
+            borderColor: 'border-yellow-500',
+            link: 'https://www.ey.com/en_ca',
+        },
+        {
+            id: 'wbooth',
+            title: 'Software Technical Assistant',
+            company: 'W.Booth Learning Factory',
+            location: 'Hamilton, ON',
+            period: '05/2019 - 12/2019',
+            logo: '/McMaster.png',
+            technologies:
+                'JavaScript (Express.js, React.js), RabbitMQ (MQTT), REST APIs, PostgreSQL',
+            responsibilities: [
+                'Built REST APIs for monitoring real-time pipelines facilitating machine-to-machine communication between smart-conveyor belt systems',
+                'Developed React.js based application for monitoring Learning Factory equipment diagnostics',
+                'Led a team of student developers in constructing a React Native application for replacing iClickers in McMaster lectures',
+            ],
+            borderColor: 'border-accent',
+            link: 'https://www.eng.mcmaster.ca/sept/news/the-industry-4-0-experience-inside-the-learning-factory/',
+        },
+    ]
+
     return (
-        <div className="mx-auto w-full max-w-4xl p-6">
-            <TabGroup>
-                <TabList className="mb-6 flex space-x-1 rounded-xl bg-blue-900/20 p-1">
-                    <Tab className="ring-opacity-60 ui-selected:bg-white ui-selected:shadow ui-not-selected:text-blue-100 ui-not-selected:hover:bg-white/[0.12] ui-not-selected:hover:text-white w-full rounded-lg py-2.5 text-sm leading-5 font-medium text-blue-700 ring-white ring-offset-2 ring-offset-blue-400 focus:ring-2 focus:outline-none">
-                        Experience
-                    </Tab>
-                    <Tab className="ring-opacity-60 ui-selected:bg-white ui-selected:shadow ui-not-selected:text-blue-100 ui-not-selected:hover:bg-white/[0.12] ui-not-selected:hover:text-white w-full rounded-lg py-2.5 text-sm leading-5 font-medium text-blue-700 ring-white ring-offset-2 ring-offset-blue-400 focus:ring-2 focus:outline-none">
-                        Education
-                    </Tab>
-                    <Tab className="ring-opacity-60 ui-selected:bg-white ui-selected:shadow ui-not-selected:text-blue-100 ui-not-selected:hover:bg-white/[0.12] ui-not-selected:hover:text-white w-full rounded-lg py-2.5 text-sm leading-5 font-medium text-blue-700 ring-white ring-offset-2 ring-offset-blue-400 focus:ring-2 focus:outline-none">
-                        Skills
-                    </Tab>
-                </TabList>
-
-                <TabPanels className="mt-2">
-                    <TabPanel className="ring-opacity-60 rounded-xl bg-white p-3 ring-white ring-offset-2 ring-offset-blue-400 focus:ring-2 focus:outline-none">
-                        <div className="space-y-6">
-                            {/* Current Position */}
-                            <div className="border-l-4 border-blue-500 pl-4">
-                                <div className="mb-2 flex items-start justify-between">
-                                    <h3 className="text-lg font-bold text-gray-900">
-                                        Full Stack Software Engineer (Team Lead)
-                                    </h3>
-                                    <span className="text-sm text-gray-500">
-                                        04/2022 - Present
-                                    </span>
-                                </div>
-                                <p className="mb-2 text-base text-gray-700">
-                                    Hyperion Sensors Inc. – Toronto, ON
-                                </p>
-                                <div className="mb-3">
-                                    <span className="text-sm font-semibold text-blue-600">
-                                        Key Technologies:{' '}
-                                    </span>
-                                    <span className="text-sm text-gray-600">
-                                        TypeScript, React (Next.js), Python
-                                        (Django), Express.js, AWS, Tailwind CSS,
-                                        Kubernetes, PostgreSQL, Apache Kafka,
-                                        REST APIs, GraphQL
-                                    </span>
-                                </div>
-                                <ul className="list-inside list-disc space-y-1 text-sm text-gray-700">
-                                    <li>
-                                        Led end-to-end development of flagship
-                                        SaaS platform Helios as Principal
-                                        Developer
-                                    </li>
-                                    <li>
-                                        Oversaw 14 production environments
-                                        supporting 6 major electricity
-                                        distributors
-                                    </li>
-                                    <li>
-                                        Designed backend REST APIs and GraphQL
-                                        systems, modernizing legacy Apache
-                                        Tomcat codebase
-                                    </li>
-                                    <li>
-                                        Architected authentication flows
-                                        integrating LDAP and Active Directory
-                                        with Auth0 and AWS Cognito
-                                    </li>
-                                    <li>
-                                        Transitioned data replication to Kafka
-                                        Streams for efficient sensor data
-                                        transmission
-                                    </li>
-                                </ul>
-                            </div>
-
-                            {/* Contract Position */}
-                            <div className="border-l-4 border-green-500 pl-4">
-                                <div className="mb-2 flex items-start justify-between">
-                                    <h3 className="text-lg font-bold text-gray-900">
-                                        Contract Software & Firmware Engineer
-                                    </h3>
-                                    <span className="text-sm text-gray-500">
-                                        01/2025 - Present
-                                    </span>
-                                </div>
-                                <p className="mb-2 text-base text-gray-700">
-                                    Blue Ocean Technologies Inc. – Toronto, ON
-                                </p>
-                                <div className="mb-3">
-                                    <span className="text-sm font-semibold text-blue-600">
-                                        Key Technologies:{' '}
-                                    </span>
-                                    <span className="text-sm text-gray-600">
-                                        C/C++, Python, ARM Cortex-M7/M5, React,
-                                        PostgreSQL, Tailwind CSS, Electron
-                                    </span>
-                                </div>
-                                <ul className="list-inside list-disc space-y-1 text-sm text-gray-700">
-                                    <li>
-                                        Converted flagship OT application to
-                                        Chromium-based (Electron) React
-                                        application in 3 months
-                                    </li>
-                                    <li>
-                                        Ported power management firmware from
-                                        Teensy 3.5 to 4.0 microcontroller
-                                        architecture
-                                    </li>
-                                    <li>
-                                        Integrated communication protocols
-                                        including Protocol Buffer APIs and
-                                        serial interfaces
-                                    </li>
-                                </ul>
-                            </div>
-
-                            {/* Previous Positions */}
-                            <div className="border-l-4 border-purple-500 pl-4">
-                                <div className="mb-2 flex items-start justify-between">
-                                    <h3 className="text-lg font-bold text-gray-900">
-                                        Associate Software Engineer Co-op
-                                    </h3>
-                                    <span className="text-sm text-gray-500">
-                                        05/2021 - 12/2021
-                                    </span>
-                                </div>
-                                <p className="mb-2 text-base text-gray-700">
-                                    Broadridge – Toronto, ON
-                                </p>
-                                <ul className="list-inside list-disc space-y-1 text-sm text-gray-700">
-                                    <li>
-                                        Developed client-release scheduling and
-                                        system monitoring tool for AWS clusters
-                                    </li>
-                                    <li>
-                                        Implemented highly normalized SQL
-                                        schemas for data integrity
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div className="border-l-4 border-orange-500 pl-4">
-                                <div className="mb-2 flex items-start justify-between">
-                                    <h3 className="text-lg font-bold text-gray-900">
-                                        DevOps/SRE Cloud Developer Co-op
-                                    </h3>
-                                    <span className="text-sm text-gray-500">
-                                        05/2020 - 08/2020
-                                    </span>
-                                </div>
-                                <p className="mb-2 text-base text-gray-700">
-                                    IBM – Ottawa/Toronto, ON
-                                </p>
-                                <ul className="list-inside list-disc space-y-1 text-sm text-gray-700">
-                                    <li>
-                                        Built updates to IBM Planning Analytics
-                                        suite and deployed in Kubernetes
-                                    </li>
-                                    <li>
-                                        Managed 60+ production and development
-                                        environments using Ansible Tower
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </TabPanel>
-                    <TabPanel className="ring-opacity-60 rounded-xl bg-white p-3 ring-white ring-offset-2 ring-offset-blue-400 focus:ring-2 focus:outline-none">
-                        <div className="space-y-6">
-                            <div className="border-l-4 border-blue-500 pl-4">
-                                <div className="mb-2 flex items-start justify-between">
-                                    <h3 className="text-lg font-bold text-gray-900">
-                                        M.Eng: Mechanical & Industrial
-                                        Engineering
-                                    </h3>
-                                    <span className="text-sm text-gray-500">
-                                        04/2026 (expected)
-                                    </span>
-                                </div>
-                                <p className="mb-2 text-base text-gray-700">
-                                    University of Toronto – Toronto, Ontario
-                                </p>
-                                <p className="mb-2 text-sm text-gray-600">
-                                    AI Applications in Robotics
-                                </p>
-                                <ul className="list-inside list-disc space-y-1 text-sm text-gray-700">
-                                    <li>
-                                        Part-time M.Eng student with emphasis in{' '}
-                                        <strong>Robotics</strong>
-                                    </li>
-                                    <li>
-                                        Capstone: The Adoption of Medical
-                                        Robotics and AI in Canadian & European
-                                        Healthcare
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div className="border-l-4 border-green-500 pl-4">
-                                <div className="mb-2 flex items-start justify-between">
-                                    <h3 className="text-lg font-bold text-gray-900">
-                                        B.Tech: Automation Engineering
-                                    </h3>
-                                    <span className="text-sm text-gray-500">
-                                        05/2022
-                                    </span>
-                                </div>
-                                <p className="mb-2 text-base text-gray-700">
-                                    McMaster University – Hamilton, Ontario
-                                </p>
-                            </div>
-                        </div>
-                    </TabPanel>
-                    <TabPanel className="ring-opacity-60 rounded-xl bg-white p-3 ring-white ring-offset-2 ring-offset-blue-400 focus:ring-2 focus:outline-none">
-                        <div className="grid gap-6 md:grid-cols-2">
-                            <div>
-                                <h3 className="mb-3 text-lg font-bold text-gray-900">
-                                    Programming Languages
-                                </h3>
-                                <div className="space-y-2">
-                                    <div className="flex flex-wrap gap-2">
-                                        <span className="rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-800">
-                                            TypeScript (JavaScript)
-                                        </span>
-                                        <span className="rounded-full bg-green-100 px-3 py-1 text-sm text-green-800">
-                                            Python
-                                        </span>
-                                        <span className="rounded-full bg-purple-100 px-3 py-1 text-sm text-purple-800">
-                                            C++
-                                        </span>
-                                        <span className="rounded-full bg-orange-100 px-3 py-1 text-sm text-orange-800">
-                                            SQL
-                                        </span>
-                                    </div>
-                                    <p className="text-sm text-gray-600">
-                                        MySQL, PostgreSQL, SQLite, NoSQL
-                                        (MongoDB)
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div>
-                                <h3 className="mb-3 text-lg font-bold text-gray-900">
-                                    APIs & UI Development
-                                </h3>
-                                <div className="space-y-2">
-                                    <div className="flex flex-wrap gap-2">
-                                        <span className="rounded-full bg-red-100 px-3 py-1 text-sm text-red-800">
-                                            REST
-                                        </span>
-                                        <span className="rounded-full bg-pink-100 px-3 py-1 text-sm text-pink-800">
-                                            GraphQL
-                                        </span>
-                                        <span className="rounded-full bg-indigo-100 px-3 py-1 text-sm text-indigo-800">
-                                            gRPC
-                                        </span>
-                                        <span className="rounded-full bg-cyan-100 px-3 py-1 text-sm text-cyan-800">
-                                            React
-                                        </span>
-                                        <span className="rounded-full bg-gray-100 px-3 py-1 text-sm text-gray-800">
-                                            Next.js [SSR]
-                                        </span>
-                                        <span className="rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-800">
-                                            Tailwind CSS
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <h3 className="mb-3 text-lg font-bold text-gray-900">
-                                    Cloud Platforms
-                                </h3>
-                                <div className="space-y-2">
-                                    <div className="flex flex-wrap gap-2">
-                                        <span className="rounded-full bg-yellow-100 px-3 py-1 text-sm text-yellow-800">
-                                            AWS
-                                        </span>
-                                        <span className="rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-800">
-                                            IBM Cloud
-                                        </span>
-                                        <span className="rounded-full bg-green-100 px-3 py-1 text-sm text-green-800">
-                                            GCP
-                                        </span>
-                                    </div>
-                                    <p className="text-sm text-gray-600">
-                                        EC2, Cognito, EKS, LightSail, RDS, S3,
-                                        Bare-metal, Hybrid Cloud, Compute
-                                        Engine, Cloud Build, Firestore
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div>
-                                <h3 className="mb-3 text-lg font-bold text-gray-900">
-                                    DevOps & Tools
-                                </h3>
-                                <div className="space-y-2">
-                                    <div className="flex flex-wrap gap-2">
-                                        <span className="rounded-full bg-purple-100 px-3 py-1 text-sm text-purple-800">
-                                            Kubernetes
-                                        </span>
-                                        <span className="rounded-full bg-red-100 px-3 py-1 text-sm text-red-800">
-                                            Docker
-                                        </span>
-                                        <span className="rounded-full bg-orange-100 px-3 py-1 text-sm text-orange-800">
-                                            Apache Kafka
-                                        </span>
-                                        <span className="rounded-full bg-green-100 px-3 py-1 text-sm text-green-800">
-                                            Linux
-                                        </span>
-                                        <span className="rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-800">
-                                            Git
-                                        </span>
-                                        <span className="rounded-full bg-yellow-100 px-3 py-1 text-sm text-yellow-800">
-                                            CI/CD
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </TabPanel>
-                </TabPanels>
-            </TabGroup>
+        <div className="space-y-4 p-4 text-left">
+            {experiences.map((experience) => (
+                <ExperienceDropdown
+                    key={experience.id}
+                    experience={experience}
+                />
+            ))}
         </div>
     )
 }

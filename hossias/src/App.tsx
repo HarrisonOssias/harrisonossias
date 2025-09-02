@@ -1,7 +1,10 @@
+/*---------------------------libraries------------------------ */
 import './styles/App.css'
-import { TitleCard } from './components/title_card'
-import ExpSection from './components/experience/exp_section'
 import { useState, useEffect } from 'react'
+
+/*---------------------------components------------------------ */
+import { TitleCard } from './components/title/title_card'
+import ExpSection from './components/experience/exp_section'
 
 export default function App() {
     const [showExperience, setShowExperience] = useState(false)
@@ -27,10 +30,12 @@ export default function App() {
             <section className="from-primary via-primary-light to-primary-sec h-screen overflow-hidden bg-gradient-to-b text-white">
                 {/* Content wrapper */}
                 <div className="relative h-screen w-screen">
-                    <div className="flex h-full w-full">
+                    {/* Desktop Layout: Side by side */}
+                    <div className="hidden h-full w-full md:flex">
                         {/* Left: Title Card Section - transitions based on state */}
+
                         <div
-                            className={`h-full flex-shrink-0 transition-all duration-1000 ease-in-out ${showExperience ? 'w-1/3' : 'w-full'} `}
+                            className={`h-full flex-shrink-0 transition-all duration-1000 ease-in-out ${showExperience ? 'w-1/3 2xl:w-2/5' : 'w-full'} `}
                         >
                             <TitleCard
                                 onViewExperience={() => setShowExperience(true)}
@@ -39,11 +44,43 @@ export default function App() {
 
                         {/* Right: Experience Section - slides in when activated */}
                         <div
-                            className={`h-full transition-all duration-1000 ease-in-out ${showExperience ? 'flex-1 opacity-100' : 'w-0 overflow-hidden opacity-0'} `}
+                            className={`h-full items-center justify-center transition-all duration-1000 ease-in-out ${
+                                showExperience
+                                    ? 'flex-1 opacity-100'
+                                    : 'w-0 overflow-hidden opacity-0'
+                            } `}
                         >
                             <ExpSection
                                 onBackToTitle={() => setShowExperience(false)}
                                 fadeInContent={fadeInContent}
+                                isMobile={false}
+                            />
+                        </div>
+                    </div>
+
+                    {/* Mobile Layout: Vertical stack */}
+                    <div className="flex h-full w-full flex-col md:hidden">
+                        {/* Top: Title Card Section - transitions based on state */}
+                        <div
+                            className={`w-full flex-shrink-0 transition-all duration-1000 ease-in-out ${showExperience ? 'h-0 overflow-hidden opacity-0' : 'h-full'} `}
+                        >
+                            <TitleCard
+                                onViewExperience={() => setShowExperience(true)}
+                            />
+                        </div>
+
+                        {/* Bottom: Experience Section - slides in when activated */}
+                        <div
+                            className={`flex w-full items-center justify-center transition-all duration-1000 ease-in-out ${
+                                showExperience
+                                    ? 'h-full opacity-100'
+                                    : 'h-0 overflow-hidden opacity-0'
+                            } `}
+                        >
+                            <ExpSection
+                                onBackToTitle={() => setShowExperience(false)}
+                                fadeInContent={fadeInContent}
+                                isMobile={true}
                             />
                         </div>
                     </div>
