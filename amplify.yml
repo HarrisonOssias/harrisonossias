@@ -1,35 +1,53 @@
 version: 1
 applications:
-  - appRoot: hossias                 # <-- your app subfolder
+  - appRoot: hossias # <-- replace if your app folder has a different name
     frontend:
       phases:
         preBuild:
           commands:
-            - set -euxo pipefail
-            - echo "=== Versions ==="; node -v; npm -v || true; yarn -v || true
-            - echo "=== Paths ==="; echo "PWD: $(pwd)"; echo "CODEBUILD_SRC_DIR: ${CODEBUILD_SRC_DIR:-}"; echo "HOME: $HOME"
-            - echo "=== CWD listing ==="; ls -la
-            - echo "=== Repo root listing ==="; ls -la "${CODEBUILD_SRC_DIR:-.}" || true
-            - echo "=== appRoot should contain package.json ==="
-            - test -f package.json && { echo "package.json found"; head -n 25 package.json; } || { echo "ERROR: package.json missing in $(pwd)"; exit 1; }
             - |
+              set -euxo pipefail
+              echo "=== Versions ==="
+              node -v
+              npm -v || true
+              yarn -v || true
+
+              echo "=== Paths ==="
+              echo "PWD: $(pwd)"
+              echo "CODEBUILD_SRC_DIR: ${CODEBUILD_SRC_DIR:-}"
+              echo "HOME: ${HOME}"
+
+              echo "=== CWD listing (should be appRoot) ==="
+              ls -la
+
+              echo "=== Check package.json exists ==="
+              test -f package.json && { echo "package.json found"; head -n 25 package.json; } || { echo "ERROR: package.json missing in $(pwd)"; exit 1; }
+
+              echo "=== Install deps (Yarn v1 vs Berry) ==="
+              corepack enable || true
               if yarn -v | grep -q '^1\.'; then
-                echo "Yarn v1 -> install with --frozen-lockfile (verbose)"; yarn install --frozen-lockfile --verbose
+                echo "Yarn v1 -> using --frozen-lockfile"
+                yarn install --frozen-lockfile --verbose
               else
-                echo "Yarn Berry -> install with --immutable"; yarn install --immutable
+                echo "Yarn Berry -> using --immutable"
+                yarn install --immutable
               fi
         build:
           commands:
-            - echo "=== Running build in $(pwd) ==="
-            - yarn build || { echo "Build failed. Nearby dirs:"; find . -maxdepth 2 -type d -print; exit 1; }
-            - echo "=== Build output check ==="; ls -la dist || { echo "ERROR: dist/ not found"; exit 1; }
+            - |
+              echo "=== Building in $(pwd) ==="
+              yarn build
+              echo "=== Build output check (dist/) ==="
+              ls -la dist || { echo "ERROR: dist/ not found after build"; exit 1; }
         postBuild:
           commands:
-            - echo "=== Artifact preview ==="; find dist -maxdepth 2 -type f | head -n 50
+            - |
+              echo "=== Artifact preview (first 50 files) ==="
+              find dist -maxdepth 2 -type f | head -n 50
       artifacts:
-        baseDirectory: dist          # resolves to hossias/dist
+        baseDirectory: dist # resolves to hossias/dist
         files:
-          - '**/*'
+          - "**/*"
       cache:
         paths:
           - node_modules/**/*
