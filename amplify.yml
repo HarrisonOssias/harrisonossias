@@ -1,0 +1,36 @@
+version: 1
+applications:
+  - appRoot: hossias                 # <-- your app subfolder
+    frontend:
+      phases:
+        preBuild:
+          commands:
+            - set -euxo pipefail
+            - echo "=== Versions ==="; node -v; npm -v || true; yarn -v || true
+            - echo "=== Paths ==="; echo "PWD: $(pwd)"; echo "CODEBUILD_SRC_DIR: ${CODEBUILD_SRC_DIR:-}"; echo "HOME: $HOME"
+            - echo "=== CWD listing ==="; ls -la
+            - echo "=== Repo root listing ==="; ls -la "${CODEBUILD_SRC_DIR:-.}" || true
+            - echo "=== appRoot should contain package.json ==="
+            - test -f package.json && { echo "package.json found"; head -n 25 package.json; } || { echo "ERROR: package.json missing in $(pwd)"; exit 1; }
+            - |
+              if yarn -v | grep -q '^1\.'; then
+                echo "Yarn v1 -> install with --frozen-lockfile (verbose)"; yarn install --frozen-lockfile --verbose
+              else
+                echo "Yarn Berry -> install with --immutable"; yarn install --immutable
+              fi
+        build:
+          commands:
+            - echo "=== Running build in $(pwd) ==="
+            - yarn build || { echo "Build failed. Nearby dirs:"; find . -maxdepth 2 -type d -print; exit 1; }
+            - echo "=== Build output check ==="; ls -la dist || { echo "ERROR: dist/ not found"; exit 1; }
+        postBuild:
+          commands:
+            - echo "=== Artifact preview ==="; find dist -maxdepth 2 -type f | head -n 50
+      artifacts:
+        baseDirectory: dist          # resolves to hossias/dist
+        files:
+          - '**/*'
+      cache:
+        paths:
+          - node_modules/**/*
+          - .yarn/cache/**/*
