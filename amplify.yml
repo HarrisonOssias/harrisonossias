@@ -1,51 +1,24 @@
 version: 1
 applications:
-  - appRoot: hossias # <-- replace if your app folder has a different name
+  - appRoot: hossias
     frontend:
       phases:
         preBuild:
           commands:
-            - |
-              set -euxo pipefail
-              echo "=== Versions ==="
-              node -v
-              npm -v || true
-              yarn -v || true
-
-              echo "=== Paths ==="
-              echo "PWD: $(pwd)"
-              echo "CODEBUILD_SRC_DIR: ${CODEBUILD_SRC_DIR:-}"
-              echo "HOME: ${HOME}"
-
-              echo "=== CWD listing (should be appRoot) ==="
-              ls -la
-
-              echo "=== Check package.json exists ==="
-              test -f package.json && { echo "package.json found"; head -n 25 package.json; } || { echo "ERROR: package.json missing in $(pwd)"; exit 1; }
-
-              echo "=== Install deps (Yarn v1 vs Berry) ==="
-              corepack enable || true
-              if yarn -v | grep -q '^1\.'; then
-                echo "Yarn v1 -> using --frozen-lockfile"
-                yarn install --frozen-lockfile --verbose
-              else
-                echo "Yarn Berry -> using --immutable"
-                yarn install --immutable
-              fi
+            - set -euxo pipefail
+            - echo "=== Switching to Node 22 ==="
+            - nvm install 22
+            - nvm use 22
+            - node -v
+            - corepack enable || true
+            - yarn -v || true
+            - yarn install --frozen-lockfile # Yarn v1 per your logs
         build:
           commands:
-            - |
-              echo "=== Building in $(pwd) ==="
-              yarn build
-              echo "=== Build output check (dist/) ==="
-              ls -la dist || { echo "ERROR: dist/ not found after build"; exit 1; }
-        postBuild:
-          commands:
-            - |
-              echo "=== Artifact preview (first 50 files) ==="
-              find dist -maxdepth 2 -type f | head -n 50
+            - yarn build
+            - ls -la dist || { echo "dist/ missing"; exit 1; }
       artifacts:
-        baseDirectory: dist # resolves to hossias/dist
+        baseDirectory: dist
         files:
           - "**/*"
       cache:
