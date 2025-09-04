@@ -14,10 +14,10 @@ export const TitleCard = ({ onViewExperience }: TitleCardProps) => {
             <div className="flex w-full justify-self-start pt-4 pl-4 sm:pt-10 sm:pl-10 2xl:pt-20 2xl:pl-20">
                 <Links />
             </div>
-            <div className="flex h-full w-full flex-col items-center justify-start gap-4 overflow-hidden font-sans">
+            <div className="flex h-full w-full flex-col items-center justify-center gap-4 overflow-hidden font-sans">
                 <img
                     src="/hossias.png"
-                    className="h-60 rounded-sm sm:h-60 xl:h-80 2xl:h-120"
+                    className="xs:h-60 h-60 rounded-sm sm:h-80 xl:h-80 2xl:h-120"
                 />
                 <div className="flex flex-col items-center justify-center gap-2">
                     <p className="bold text-base sm:text-lg xl:text-3xl">
@@ -36,7 +36,7 @@ export const TitleCard = ({ onViewExperience }: TitleCardProps) => {
                 <div className="flex gap-4">
                     <button
                         onClick={onViewExperience}
-                        className="bg-secondary hover:bg-secondary/50 text-primary flex items-center gap-2 rounded-md px-6 py-3 font-mono text-base font-bold shadow-lg transition-all duration-200 hover:scale-105 hover:shadow-xl active:scale-95 sm:gap-3 sm:px-8 sm:py-4 sm:text-lg"
+                        className="bg-secondary hover:bg-secondary/50 text-primary flex items-center gap-2 rounded-md p-2 font-mono text-base font-bold shadow-lg transition-all duration-200 hover:scale-105 hover:shadow-xl active:scale-95 sm:gap-3 sm:px-8 sm:py-4 sm:text-lg"
                     >
                         <span>View My Experience</span>
                         <svg
