@@ -3,7 +3,7 @@ type LinkType = {
     url: string
     svg_path: string
 }
-
+import { CodeBracketIcon } from '@heroicons/react/20/solid'
 const icon_paths: LinkType[] = [
     {
         name: 'GitHub',
@@ -27,7 +27,7 @@ const icon_paths: LinkType[] = [
 
 const Links = () => {
     return (
-        <div className="flex flex-row items-start justify-center gap-4">
+        <div className="flex flex-row items-center justify-center gap-4">
             {icon_paths.map((link) => (
                 <a
                     key={link.name}
@@ -48,6 +48,16 @@ const Links = () => {
                     </svg>
                 </a>
             ))}
+            <a
+                href="https://github.com/HarrisonOssias/harrisonossias"
+                download
+                className="text-primary bg-secondary/50 hover:text-primary hover:bg-secondary/30 flex flex-row items-center gap-1 rounded-sm p-1 transition-colors duration-300 hover:scale-110"
+                aria-label="Download Resume"
+                title="Download Resume"
+            >
+                <CodeBracketIcon className="text-primary h-3 w-3 xl:h-5 xl:w-5" />
+                <span>View Source</span>
+            </a>
         </div>
     )
 }

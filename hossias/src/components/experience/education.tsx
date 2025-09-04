@@ -7,7 +7,7 @@ export const Education = () => {
                         <img
                             src="/UofT.png"
                             alt="University of Toronto logo"
-                            className="h-20 w-20 rounded-lg bg-white object-contain p-1 shadow-sm sm:h-30 sm:w-30 2xl:h-40 2xl:w-40"
+                            className="h-20 w-20 rounded-lg bg-white object-contain p-1 shadow-sm xl:h-32 xl:w-32"
                         />
                         <div className="flex-1">
                             <div className="flex items-start justify-between">
@@ -44,7 +44,7 @@ export const Education = () => {
                         <img
                             src="/McMaster.png"
                             alt="McMaster University logo"
-                            className="h-20 w-20 rounded-lg bg-white object-contain p-1 shadow-sm sm:h-30 sm:w-30 2xl:h-40 2xl:w-40"
+                            className="h-20 w-20 rounded-lg bg-white object-contain p-1 shadow-sm xl:h-32 xl:w-32"
                         />
                         <div className="flex-1">
                             <div className="flex items-start justify-between">

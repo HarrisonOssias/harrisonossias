@@ -26,7 +26,7 @@ export const ExperienceDropdown = ({
                     <img
                         src={experience.logo}
                         alt={`${experience.company} logo`}
-                        className="h-20 w-20 rounded-lg bg-white object-contain p-1 shadow-sm xl:h-30 xl:w-30 2xl:h-36 2xl:w-36"
+                        className="h-20 w-20 rounded-lg bg-white object-contain p-1 shadow-sm xl:h-28 xl:w-28 2xl:h-30 2xl:w-30"
                     />
                     <div className="items-left flex flex-col">
                         <h1 className="text-success/80 group-hover:text-primary-light text-lg font-semibold xl:text-lg 2xl:text-xl">

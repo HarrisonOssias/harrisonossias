@@ -118,6 +118,29 @@ export const DEFAULT_SKILLS: SkillsSection[] = [
             { label: 'Tailwind CSS', color: 'blue' },
         ],
     },
+
+    {
+        title: 'Embedded Systems, IoT, and Networking',
+        badges: [
+            { label: 'ARM Cortex‑M & -F', color: 'purple' },
+            { label: 'STM32', color: 'purple' },
+            { label: 'BLE', color: 'cyan' },
+            { label: 'ESP32', color: 'yellow' },
+            { label: 'RP2040 (Pico)', color: 'pink' },
+            { label: 'FreeRTOS', color: 'green' },
+            { label: 'Zigbee / Thread', color: 'orange' },
+            { label: 'LoRaWAN & Mesh', color: 'green' },
+            { label: 'MQTT', color: 'gray' },
+            { label: 'CAN / RS‑485', color: 'red' },
+            { label: 'I²C / SPI / UART', color: 'blue' },
+            { label: 'OTA Updates', color: 'yellow' },
+            { label: 'mTLS / TLS', color: 'red' },
+
+            // Example of a custom hex color chip:
+            // { label: 'Bazel', hex: '#3F51B5' },
+        ],
+        note: 'BLE SOC: nrf52840; Production: OTA, secure provisioning (mTLS), power optimization',
+    },
     {
         title: 'Cloud Platforms',
         badges: [
@@ -136,6 +159,7 @@ export const DEFAULT_SKILLS: SkillsSection[] = [
             { label: 'Linux', color: 'green' },
             { label: 'Git', color: 'blue' },
             { label: 'CI/CD', color: 'yellow' },
+            { label: 'PlatformIO / CMake', color: 'cyan' },
             // Example of a custom hex color chip:
             // { label: "Bazel", hex: "#3F51B5" },
         ],
