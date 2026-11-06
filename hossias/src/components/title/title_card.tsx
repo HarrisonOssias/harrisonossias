@@ -17,7 +17,7 @@ export const TitleCard = ({ onViewExperience }: TitleCardProps) => {
             <div className="flex h-full w-full flex-col items-center justify-center gap-4 overflow-hidden font-sans">
                 <img
                     src="/hossias.png"
-                    className="xs:h-60 h-60 rounded-sm sm:h-80 xl:h-80 2xl:h-120"
+                    className="h-72 rounded-sm sm:h-80 lg:h-100 2xl:h-120"
                 />
                 <div className="flex flex-col items-center justify-center gap-2">
                     <p className="bold text-base sm:text-lg xl:text-3xl">
@@ -54,13 +54,6 @@ export const TitleCard = ({ onViewExperience }: TitleCardProps) => {
                             />
                         </svg>
                     </button>
-
-                    <a
-                        href="mailto:harrison.ossias@gmail.com"
-                        className="bg-primary hover:bg-primary/80 x flex items-center gap-2 rounded-md px-2 py-1 font-mono text-base text-white shadow-lg transition-all duration-200 hover:scale-105 hover:shadow-xl active:scale-95"
-                    >
-                        Contact Me
-                    </a>
                 </div>
             </div>
         </>

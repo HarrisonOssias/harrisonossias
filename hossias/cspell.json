@@ -1,0 +1,29 @@
+{
+    "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
+    "version": "0.2",
+    "language": "en,en-CA",
+    "ignorePaths": ["dist", "node_modules", "yarn.lock", "public"],
+    "words": [
+        "Alectra",
+        "Alteryx",
+        "apigateway",
+        "blueocean",
+        "DKIM",
+        "Elexicon",
+        "Flink",
+        "harrisonossias",
+        "hossias",
+        "hotfixes",
+        "Kinetis",
+        "microcontroller",
+        "Ossias",
+        "sesv2",
+        "telepresence",
+        "tenthree",
+        "UART",
+        "uoft",
+        "VITE",
+        "wbooth",
+        "Zenoh"
+    ]
+}

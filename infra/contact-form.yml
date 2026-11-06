@@ -1,0 +1,230 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: >
+    Contact form for harrisonossias.com. An HTTP API posts to a Lambda function,
+    which emails the message through SES. Cost is capped by API throttling, the
+    SES sandbox (200 emails a day), and a budget alert.
+
+Parameters:
+    Domain:
+        Type: String
+        Default: harrisonossias.com
+        Description: Domain verified in SES; mail is sent from contact@<Domain>.
+    Recipient:
+        Type: String
+        NoEcho: true
+        Description: Inbox that receives form messages and budget alerts. Passed at deploy time, never committed.
+    AllowedOrigins:
+        Type: CommaDelimitedList
+        Default: https://harrisonossias.com,https://www.harrisonossias.com,https://hossias.ca,https://www.hossias.ca
+        Description: Browser origins allowed to call the API.
+    MonthlyBudgetUsd:
+        Type: Number
+        Default: 3
+        Description: Email an alert if total account spend passes this amount.
+
+Resources:
+    # SES identities. The domain needs the three DKIM CNAMEs in the outputs;
+    # the recipient gets a verification email from AWS (required in the sandbox).
+    DomainIdentity:
+        Type: AWS::SES::EmailIdentity
+        Properties:
+            EmailIdentity: !Ref Domain
+
+    RecipientIdentity:
+        Type: AWS::SES::EmailIdentity
+        Properties:
+            EmailIdentity: !Ref Recipient
+
+    FunctionRole:
+        Type: AWS::IAM::Role
+        Properties:
+            AssumeRolePolicyDocument:
+                Version: "2012-10-17"
+                Statement:
+                    - Effect: Allow
+                      Principal: { Service: lambda.amazonaws.com }
+                      Action: sts:AssumeRole
+            Policies:
+                - PolicyName: send-contact-email
+                  PolicyDocument:
+                      Version: "2012-10-17"
+                      Statement:
+                          - Effect: Allow
+                            Action: ses:SendEmail
+                            Resource:
+                                - !Sub arn:${AWS::Partition}:ses:${AWS::Region}:${AWS::AccountId}:identity/${Domain}
+                                - !Sub arn:${AWS::Partition}:ses:${AWS::Region}:${AWS::AccountId}:identity/*@${Domain}
+                                - !Sub arn:${AWS::Partition}:ses:${AWS::Region}:${AWS::AccountId}:identity/${Recipient}
+                          - Effect: Allow
+                            Action:
+                                - logs:CreateLogStream
+                                - logs:PutLogEvents
+                            Resource: !GetAtt LogGroup.Arn
+
+    LogGroup:
+        Type: AWS::Logs::LogGroup
+        Properties:
+            LogGroupName: /aws/lambda/harrisonossias-contact
+            RetentionInDays: 14
+
+    Function:
+        Type: AWS::Lambda::Function
+        Properties:
+            FunctionName: harrisonossias-contact
+            Runtime: nodejs22.x
+            Architectures: [arm64]
+            Handler: index.handler
+            MemorySize: 128
+            Timeout: 5
+            # Hard cap: at most 2 copies run at once, however many requests
+            # slip past API throttling. Extra invocations are rejected, not billed.
+            ReservedConcurrentExecutions: 2
+            Role: !GetAtt FunctionRole.Arn
+            LoggingConfig:
+                LogGroup: !Ref LogGroup
+            Environment:
+                Variables:
+                    FROM: !Sub "Website contact <contact@${Domain}>"
+                    TO: !Ref Recipient
+                    ORIGINS: !Join [",", !Ref AllowedOrigins]
+            Code:
+                ZipFile: |
+                    const { SESv2Client, SendEmailCommand } = require('@aws-sdk/client-sesv2')
+                    const ses = new SESv2Client({})
+                    const ORIGINS = process.env.ORIGINS.split(',')
+                    const EMAIL_RE = /^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/
+                    const clean = (v, max) => String(v ?? '').trim().slice(0, max)
+                    const reply = (statusCode, body) => ({
+                        statusCode,
+                        headers: { 'content-type': 'application/json' },
+                        body: JSON.stringify(body),
+                    })
+
+                    exports.handler = async (event) => {
+                        if (!ORIGINS.includes(event.headers?.origin)) {
+                            return reply(403, { error: 'Forbidden' })
+                        }
+                        let data
+                        try {
+                            const raw = event.isBase64Encoded
+                                ? Buffer.from(event.body ?? '', 'base64').toString()
+                                : event.body ?? ''
+                            if (raw.length > 8000) return reply(413, { error: 'Too large' })
+                            data = JSON.parse(raw)
+                        } catch {
+                            return reply(400, { error: 'Invalid request' })
+                        }
+
+                        // Bot traps: a hidden field people never fill, and a
+                        // submit faster than a person can type. Pretend success.
+                        if (data.website || !(Number(data.elapsed) >= 3000)) {
+                            return reply(200, { ok: true })
+                        }
+
+                        const name = clean(data.name, 100).replace(/[\r\n]+/g, ' ')
+                        const email = clean(data.email, 200)
+                        const message = clean(data.message, 4000)
+                        if (!name || !EMAIL_RE.test(email) || message.length < 10) {
+                            return reply(400, { error: 'Please fill in every field.' })
+                        }
+
+                        try {
+                            await ses.send(new SendEmailCommand({
+                                FromEmailAddress: process.env.FROM,
+                                Destination: { ToAddresses: [process.env.TO] },
+                                ReplyToAddresses: [email],
+                                Content: { Simple: {
+                                    Subject: { Data: `Website message from ${name}` },
+                                    Body: { Text: { Data: `${message}\n\n— ${name} <${email}>` } },
+                                } },
+                            }))
+                        } catch (err) {
+                            console.error(err)
+                            return reply(502, { error: 'Could not send right now.' })
+                        }
+                        return reply(200, { ok: true })
+                    }
+
+    Api:
+        Type: AWS::ApiGatewayV2::Api
+        Properties:
+            Name: harrisonossias-contact
+            ProtocolType: HTTP
+            CorsConfiguration:
+                AllowOrigins: !Ref AllowedOrigins
+                AllowMethods: [POST]
+                AllowHeaders: [content-type]
+                MaxAge: 86400
+
+    Integration:
+        Type: AWS::ApiGatewayV2::Integration
+        Properties:
+            ApiId: !Ref Api
+            IntegrationType: AWS_PROXY
+            IntegrationUri: !GetAtt Function.Arn
+            PayloadFormatVersion: "2.0"
+
+    Route:
+        Type: AWS::ApiGatewayV2::Route
+        Properties:
+            ApiId: !Ref Api
+            RouteKey: POST /contact
+            Target: !Sub integrations/${Integration}
+
+    # Throttling rejects excess requests before Lambda runs. At this rate, a
+    # bot hammering the endpoint all month costs a few dollars at most.
+    Stage:
+        Type: AWS::ApiGatewayV2::Stage
+        Properties:
+            ApiId: !Ref Api
+            StageName: $default
+            AutoDeploy: true
+            DefaultRouteSettings:
+                ThrottlingRateLimit: 1
+                ThrottlingBurstLimit: 2
+
+    InvokePermission:
+        Type: AWS::Lambda::Permission
+        Properties:
+            FunctionName: !Ref Function
+            Action: lambda:InvokeFunction
+            Principal: apigateway.amazonaws.com
+            SourceArn: !Sub arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${Api}/*/POST/contact
+
+    Budget:
+        Type: AWS::Budgets::Budget
+        Properties:
+            Budget:
+                BudgetName: harrisonossias-monthly
+                BudgetType: COST
+                TimeUnit: MONTHLY
+                BudgetLimit:
+                    Amount: !Ref MonthlyBudgetUsd
+                    Unit: USD
+            NotificationsWithSubscribers:
+                - Notification:
+                      NotificationType: ACTUAL
+                      ComparisonOperator: GREATER_THAN
+                      Threshold: 50
+                  Subscribers:
+                      - SubscriptionType: EMAIL
+                        Address: !Ref Recipient
+                - Notification:
+                      NotificationType: FORECASTED
+                      ComparisonOperator: GREATER_THAN
+                      Threshold: 100
+                  Subscribers:
+                      - SubscriptionType: EMAIL
+                        Address: !Ref Recipient
+
+Outputs:
+    Endpoint:
+        Description: Set as the VITE_CONTACT_ENDPOINT environment variable on the Amplify branch.
+        Value: !Sub https://${Api}.execute-api.${AWS::Region}.amazonaws.com/contact
+    DkimRecords:
+        Description: Add these three CNAME records at your DNS provider.
+        Value: !Join
+            - "  "
+            - - !Sub "${DomainIdentity.DkimDNSTokenName1} -> ${DomainIdentity.DkimDNSTokenValue1}"
+              - !Sub "${DomainIdentity.DkimDNSTokenName2} -> ${DomainIdentity.DkimDNSTokenValue2}"
+              - !Sub "${DomainIdentity.DkimDNSTokenName3} -> ${DomainIdentity.DkimDNSTokenValue3}"

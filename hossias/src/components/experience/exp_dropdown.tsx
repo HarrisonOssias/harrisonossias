@@ -28,22 +28,23 @@ export const ExperienceDropdown = ({
                         alt={`${experience.company} logo`}
                         className="h-20 w-20 rounded-lg bg-white object-contain p-1 shadow-sm xl:h-28 xl:w-28 2xl:h-30 2xl:w-30"
                     />
+
                     <div className="items-left flex flex-col">
-                        <h1 className="text-success/80 group-hover:text-primary-light text-lg font-semibold xl:text-lg 2xl:text-xl">
+                        <h1 className="group-hover:text-primary-light text-lg font-semibold xl:text-lg 2xl:text-xl">
                             {experience.title}
                         </h1>
-                        <span className="text-secondary/50 group-hover:text-primary text-sm lg:text-sm xl:text-base 2xl:text-lg">
-                            {experience.period}
-                        </span>
                         <p
                             onClick={() =>
                                 window.open(experience.link, '_blank')
                             }
-                            className="group text-secondary/50 group-hover:text-primary flex cursor-pointer items-center gap-2 text-base hover:font-bold hover:underline lg:text-base xl:text-lg 2xl:text-xl"
+                            className="group text-success group-hover:text-primary flex cursor-pointer items-center gap-2 text-base font-semibold hover:font-bold hover:underline lg:text-lg 2xl:text-xl"
                         >
                             {experience.company} – {experience.location}
                             <ArrowTopRightOnSquareIcon className="text-success/50 group-hover:text-primary h-5 w-5" />
                         </p>
+                        <span className="group-hover:text-primary text-sm lg:text-sm xl:text-base 2xl:text-lg">
+                            {experience.period}
+                        </span>
                     </div>
                 </div>
                 <div className="flex items-center space-x-2">

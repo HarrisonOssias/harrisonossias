@@ -1,67 +1,70 @@
-export const Education = () => {
-    return (
-        <div className="p-2 text-left sm:p-4">
-            <div className="space-y-6">
-                <div className="border-l-4 border-blue-500 pl-2 sm:pl-4">
-                    <div className="mb-3 flex items-center space-x-2 sm:space-x-3">
-                        <img
-                            src="/UofT.png"
-                            alt="University of Toronto logo"
-                            className="h-20 w-20 rounded-lg bg-white object-contain p-1 shadow-sm xl:h-32 xl:w-32"
-                        />
-                        <div className="flex-1">
-                            <div className="flex items-start justify-between">
-                                <h3 className="text-success/80 text-base font-bold sm:text-lg">
-                                    M.Eng: Mechanical & Industrial Engineering
-                                </h3>
-                                <span className="text-success/80 text-xs sm:text-sm xl:text-base">
-                                    04/2026 (expected)
-                                </span>
-                            </div>
-                            <p className="text-secondary/70 text-sm font-medium sm:text-base">
-                                University of Toronto – Toronto, Ontario
-                            </p>
-                            <p className="text-secondary/60 text-xs sm:text-sm xl:text-base">
-                                AI Applications in Robotics
-                            </p>
-                            <ul className="text-secondary/40 list-disecondary/60 ml-4 list-inside list-disc text-sm font-medium sm:ml-5 sm:text-base">
-                                <li>
-                                    Part-time M.Eng student with emphasis in{' '}
-                                    <strong>Robotics</strong>
-                                </li>
-                                <li>
-                                    <span className="font-bold">Thesis:</span>{' '}
-                                    The Adoption of Medical Robotics and AI in
-                                    Canadian & European Healthcare
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+import { EDUCATION } from '../../data/resume'
+import { useReveal } from '../../hooks/useReveal'
+import { SectionLabel } from '../section_label'
 
-                <div className="border-l-4 border-green-500 pl-2 sm:pl-4">
-                    <div className="mb-3 flex items-center space-x-2 sm:space-x-3">
-                        <img
-                            src="/McMaster.png"
-                            alt="McMaster University logo"
-                            className="h-20 w-20 rounded-lg bg-white object-contain p-1 shadow-sm xl:h-32 xl:w-32"
-                        />
-                        <div className="flex-1">
-                            <div className="flex items-start justify-between">
-                                <h3 className="text-success/80 text-base font-bold sm:text-lg">
-                                    B.Tech: Automation Engineering
+export const Education = () => {
+    const ref = useReveal<HTMLElement>()
+
+    return (
+        <section
+            id="education"
+            ref={ref}
+            className="mx-auto max-w-6xl scroll-mt-20 px-6 py-24 text-left"
+        >
+            <SectionLabel>education</SectionLabel>
+            <h2 className="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
+                Where I trained
+            </h2>
+
+            <div className="mt-10 grid gap-4 md:grid-cols-2">
+                {EDUCATION.map((d) => (
+                    <article
+                        key={d.school}
+                        className="reveal border-line bg-panel/60 hover:border-signal/40 rounded-xl border p-6 transition-colors"
+                    >
+                        <div className="flex items-start gap-4">
+                            <img
+                                src={d.logo}
+                                alt=""
+                                className="h-14 w-14 shrink-0 rounded-md bg-white object-contain p-1"
+                            />
+                            <div className="min-w-0">
+                                <h3 className="text-lg leading-snug font-semibold">
+                                    {d.degree}
                                 </h3>
-                                <span className="text-success/80 text-xs sm:text-sm xl:text-base">
-                                    05/2022
-                                </span>
+                                <p className="text-signal mt-0.5 text-sm">
+                                    {d.focus}
+                                </p>
+                                <p className="text-muted mt-1 font-mono text-xs">
+                                    {d.school} · {d.period}
+                                </p>
                             </div>
-                            <p className="text-secondary/70 text-sm font-medium sm:text-base">
-                                McMaster University – Hamilton, Ontario
-                            </p>
                         </div>
-                    </div>
-                </div>
+                        {d.notes.length > 0 && (
+                            <ul className="text-muted mt-5 space-y-2 text-sm leading-relaxed">
+                                {d.notes.map((n) => (
+                                    <li key={n} className="flex gap-3">
+                                        <span className="text-coral mt-[3px] font-mono text-xs">
+                                            ›
+                                        </span>
+                                        <span>{n}</span>
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+                        <div className="mt-5 flex flex-wrap gap-1.5">
+                            {d.tags.map((t) => (
+                                <span
+                                    key={t}
+                                    className="border-line text-signal/90 rounded border px-2 py-0.5 font-mono text-[11px]"
+                                >
+                                    {t}
+                                </span>
+                            ))}
+                        </div>
+                    </article>
+                ))}
             </div>
-        </div>
+        </section>
     )
 }

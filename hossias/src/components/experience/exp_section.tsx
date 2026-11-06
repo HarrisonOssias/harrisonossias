@@ -9,6 +9,15 @@ interface ExpSectionProps {
     isMobile?: boolean
 }
 
+const tabs = ['Experience', 'Education', 'Skills']
+const ExpTab = ({ label }: { label: string }) => {
+    return (
+        <Tab className="data-selected:bg-secondary ui-not-selected:text-primary-light ui-not-selected:hover:bg-white/[0.12] ui-not-selected:hover:text-white text-primary w-full rounded-lg py-1 text-sm leading-5 font-semibold focus:outline-none data-selected:shadow xl:py-2.5 xl:text-base 2xl:text-lg">
+            {label}
+        </Tab>
+    )
+}
+
 const ExpSection = ({
     onBackToTitle,
     fadeInContent,
@@ -40,16 +49,10 @@ const ExpSection = ({
                         className={`exp-details h-full backdrop-blur-sm transition-all delay-200 duration-700 ease-out ${fadeInContent ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'} `}
                     >
                         <TabGroup className="flex h-full flex-col">
-                            <TabList className="bg-secondary/20 m-1 flex flex-shrink-0 space-x-1 rounded-xl p-1">
-                                <Tab className="data-selected:bg-secondary ui-not-selected:text-primary-light ui-not-selected:hover:bg-white/[0.12] ui-not-selected:hover:text-white text-primary w-full rounded-lg py-2.5 text-sm leading-5 font-semibold focus:outline-none data-selected:shadow xl:text-base 2xl:text-lg">
-                                    Experience
-                                </Tab>
-                                <Tab className="data-selected:bg-secondary ui-not-selected:text-primary-light ui-not-selected:hover:bg-white/[0.12] ui-not-selected:hover:text-white text-primary w-full rounded-lg py-2.5 text-sm leading-5 font-semibold focus:outline-none data-selected:shadow xl:text-base 2xl:text-lg">
-                                    Education
-                                </Tab>
-                                <Tab className="data-selected:bg-secondary ui-not-selected:text-primary-light ui-not-selected:hover:bg-white/[0.12] ui-not-selected:hover:text-white text-primary w-full rounded-lg py-2.5 text-sm leading-5 font-semibold focus:outline-none data-selected:shadow xl:text-base 2xl:text-lg">
-                                    Skills
-                                </Tab>
+                            <TabList className="bg-secondary/20 m-1 flex flex-shrink-0 space-x-1 rounded-xl">
+                                {tabs.map((tab: string) => {
+                                    return <ExpTab key={tab} label={tab} />
+                                })}
                             </TabList>
 
                             <TabPanels>
