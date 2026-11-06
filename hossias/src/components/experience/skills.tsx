@@ -1,167 +1,49 @@
-// Skills.tsx
-import React from 'react'
+import { SKILLS } from '../../data/resume'
+import { useReveal } from '../../hooks/useReveal'
+import { SectionLabel } from '../section_label'
 
-type BadgeColor =
-    | 'blue'
-    | 'green'
-    | 'purple'
-    | 'orange'
-    | 'red'
-    | 'pink'
-    | 'indigo'
-    | 'cyan'
-    | 'gray'
-    | 'yellow'
+export const Skills = () => {
+    const ref = useReveal<HTMLElement>()
 
-type SkillBadge = {
-    label: string
-    /** Tailwind color key from the palette above. If omitted, "gray" is used. */
-    color?: BadgeColor
-    /** Optional custom HEX (uses inline style, bypassing Tailwind). */
-    hex?: string
-}
-
-type SkillsSection = {
-    title: string
-    badges: SkillBadge[]
-    note?: string
-}
-
-const COLOR_MAP: Record<BadgeColor, string> = {
-    blue: 'bg-blue-100 text-blue-800',
-    green: 'bg-green-100 text-green-800',
-    purple: 'bg-purple-100 text-purple-800',
-    orange: 'bg-orange-100 text-orange-800',
-    red: 'bg-red-100 text-red-800',
-    pink: 'bg-pink-100 text-pink-800',
-    indigo: 'bg-indigo-100 text-indigo-800',
-    cyan: 'bg-cyan-100 text-cyan-800',
-    gray: 'bg-gray-100 text-gray-800',
-    yellow: 'bg-yellow-100 text-yellow-800',
-}
-
-const Badge: React.FC<SkillBadge> = ({ label, color = 'gray', hex }) => {
-    if (hex) {
-        return (
-            <span
-                className="rounded-full px-3 py-1 text-sm"
-                style={{
-                    backgroundColor: `${hex}22`, // faint bg
-                    color: hex,
-                    border: `1px solid ${hex}55`,
-                }}
-            >
-                {label}
-            </span>
-        )
-    }
     return (
-        <span className={`rounded-full px-3 py-1 text-sm ${COLOR_MAP[color]}`}>
-            {label}
-        </span>
-    )
-}
+        <section
+            id="skills"
+            ref={ref}
+            className="mx-auto max-w-6xl scroll-mt-20 px-6 py-24 text-left"
+        >
+            <SectionLabel>skills</SectionLabel>
+            <h2 className="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
+                The toolkit
+            </h2>
 
-type SkillsProps = {
-    /** Pass your own data; defaults shown below. */
-    data?: SkillsSection[]
-}
-
-export const Skills: React.FC<SkillsProps> = ({ data = DEFAULT_SKILLS }) => {
-    return (
-        <div className="p-4 text-left">
-            <div className="grid gap-6 md:grid-cols-2">
-                {data.map((section) => (
-                    <div key={section.title}>
-                        <h3 className="text-secondary/70 mb-3 text-lg font-bold">
-                            {section.title}
-                        </h3>
-                        <div className="space-y-2">
-                            <div className="flex flex-wrap gap-2">
-                                {section.badges.map((b) => (
-                                    <Badge key={b.label} {...b} />
-                                ))}
-                            </div>
-                            {section.note ? (
-                                <p className="text-secondary/60 text-sm">
-                                    {section.note}
-                                </p>
-                            ) : null}
+            <div className="border-line bg-line mt-10 grid gap-px overflow-hidden rounded-xl border sm:grid-cols-2 lg:grid-cols-3">
+                {SKILLS.map((group, i) => (
+                    <div
+                        key={group.title}
+                        className={`reveal bg-ink hover:bg-panel group p-6 transition-colors ${
+                            i === SKILLS.length - 1 ? 'lg:col-span-2' : ''
+                        }`}
+                        style={{ transitionDelay: `${i * 40}ms` }}
+                    >
+                        <div className="flex items-center justify-between">
+                            <h3 className="font-semibold">{group.title}</h3>
+                            <span className="text-muted group-hover:text-signal font-mono text-xs transition-colors">
+                                {String(group.items.length).padStart(2, '0')}
+                            </span>
                         </div>
+                        <ul className="mt-4 flex flex-wrap gap-1.5">
+                            {group.items.map((item) => (
+                                <li
+                                    key={item}
+                                    className="border-line text-muted hover:border-signal hover:text-cream rounded border px-2 py-1 font-mono text-xs transition-colors"
+                                >
+                                    {item}
+                                </li>
+                            ))}
+                        </ul>
                     </div>
                 ))}
             </div>
-        </div>
+        </section>
     )
 }
-
-/** -------- Example data you can edit/replace -------- */
-export const DEFAULT_SKILLS: SkillsSection[] = [
-    {
-        title: 'Programming Languages',
-        badges: [
-            { label: 'TypeScript (JavaScript)', color: 'blue' },
-            { label: 'Python', color: 'green' },
-            { label: 'C++', color: 'purple' },
-            { label: 'SQL', color: 'orange' },
-        ],
-        note: 'MySQL, PostgreSQL, SQLite, NoSQL (MongoDB)',
-    },
-    {
-        title: 'APIs & UI Development',
-        badges: [
-            { label: 'REST', color: 'red' },
-            { label: 'GraphQL', color: 'pink' },
-            { label: 'gRPC', color: 'indigo' },
-            { label: 'React', color: 'cyan' },
-            { label: 'Next.js [SSR]', color: 'gray' },
-            { label: 'Tailwind CSS', color: 'blue' },
-        ],
-    },
-
-    {
-        title: 'Embedded Systems, IoT, and Networking',
-        badges: [
-            { label: 'ARM Cortex‑M & -F', color: 'purple' },
-            { label: 'STM32', color: 'purple' },
-            { label: 'BLE', color: 'cyan' },
-            { label: 'ESP32', color: 'yellow' },
-            { label: 'RP2040 (Pico)', color: 'pink' },
-            { label: 'FreeRTOS', color: 'green' },
-            { label: 'Zigbee / Thread', color: 'orange' },
-            { label: 'LoRaWAN & Mesh', color: 'green' },
-            { label: 'MQTT', color: 'gray' },
-            { label: 'CAN / RS‑485', color: 'red' },
-            { label: 'I²C / SPI / UART', color: 'blue' },
-            { label: 'OTA Updates', color: 'yellow' },
-            { label: 'mTLS / TLS', color: 'red' },
-
-            // Example of a custom hex color chip:
-            // { label: 'Bazel', hex: '#3F51B5' },
-        ],
-        note: 'BLE SOC: nrf52840; Production: OTA, secure provisioning (mTLS), power optimization',
-    },
-    {
-        title: 'Cloud Platforms',
-        badges: [
-            { label: 'AWS', color: 'yellow' },
-            { label: 'IBM Cloud', color: 'blue' },
-            { label: 'GCP', color: 'green' },
-        ],
-        note: 'EC2, Cognito, EKS, LightSail, RDS, S3, Bare-metal, Hybrid Cloud, Compute Engine, Cloud Build, Firestore',
-    },
-    {
-        title: 'DevOps & Tools',
-        badges: [
-            { label: 'Kubernetes', color: 'purple' },
-            { label: 'Docker', color: 'red' },
-            { label: 'Apache Kafka', color: 'orange' },
-            { label: 'Linux', color: 'green' },
-            { label: 'Git', color: 'blue' },
-            { label: 'CI/CD', color: 'yellow' },
-            { label: 'PlatformIO / CMake', color: 'cyan' },
-            // Example of a custom hex color chip:
-            // { label: "Bazel", hex: "#3F51B5" },
-        ],
-    },
-]

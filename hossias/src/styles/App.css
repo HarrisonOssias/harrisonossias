@@ -1,29 +1,79 @@
-@import url('https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap'); 
-@import "tailwindcss";
+@import 'tailwindcss';
+
 @theme {
-  --font-sans: "Kanit", sans-serif;
-  --font-mono: "Space Mono", monospace;
-  --color-primary: #2D3047;
-  --color-primary-light: #072736;
-  --color-primary-sec: #072636;
-  --color-success: #339996;
-  --color-accent: #DF7C7C;
-  --color-secondary: #E3D7C9;
+    --font-sans: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+    --color-ink: #0a1620;
+    --color-ink-deep: #07111a;
+    --color-panel: #0f2130;
+    --color-line: #1c3445;
+    --color-cream: #e9dfd2;
+    --color-muted: #8fa3ae;
+    --color-signal: #3ec1b8;
+    --color-coral: #e58a8a;
+
+    --animate-fade-up: fade-up 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    --animate-pulse-dot: pulse-dot 2s ease-in-out infinite;
+
+    @keyframes fade-up {
+        from {
+            opacity: 0;
+            transform: translateY(16px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    @keyframes pulse-dot {
+        0%,
+        100% {
+            box-shadow: 0 0 0 0 rgb(62 193 184 / 0.6);
+        }
+        50% {
+            box-shadow: 0 0 0 6px rgb(62 193 184 / 0);
+        }
+    }
 }
 
 html {
-  scroll-behavior: smooth;
-  overflow-x: auto;
-  overflow-y: auto;
+    scroll-behavior: smooth;
+    background: var(--color-ink);
+    color-scheme: dark;
 }
 
 body {
-  overflow-x: auto;
-  overflow-y: auto;
+    background: var(--color-ink);
+    color: var(--color-cream);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
 }
 
+::selection {
+    background: rgb(62 193 184 / 0.35);
+}
 
-#root {
-  width: 100%;
-  text-align: center;
+/* Elements fade up once they scroll into view (see useReveal) */
+.reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition:
+        opacity 0.7s cubic-bezier(0.2, 0.7, 0.2, 1),
+        transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.reveal.is-visible {
+    opacity: 1;
+    transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+    .reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
 }
