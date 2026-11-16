@@ -29,6 +29,7 @@ export interface Degree {
     location: string
     period: string
     logo: string
+    link: string
     notes: string[]
     tags: string[]
 }
@@ -204,6 +205,7 @@ export const EDUCATION: Degree[] = [
         degree: 'MEng, Mechanical & Industrial Engineering',
         focus: 'Robotics',
         school: 'University of Toronto',
+        link: 'https://www.utoronto.ca/',
         location: 'Toronto, ON',
         period: '01/2025 – 08/2026',
         logo: uoftLogo,
@@ -217,6 +219,7 @@ export const EDUCATION: Degree[] = [
         degree: 'BTech, Automation Engineering',
         focus: 'Smart Systems & IoT Engineering',
         school: 'McMaster University',
+        link: 'https://www.mcmaster.ca/',
         location: 'Hamilton, ON',
         period: '09/2017 – 05/2022',
         logo: mcmasterLogo,

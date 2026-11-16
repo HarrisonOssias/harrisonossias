@@ -1,8 +1,5 @@
 import { useState } from 'react'
-import {
-    ArrowTopRightOnSquareIcon,
-    ChevronDownIcon,
-} from '@heroicons/react/20/solid'
+import { ArrowUpRightIcon, ChevronDownIcon } from '@heroicons/react/20/solid'
 import { EXPERIENCE, FILTER_SKILLS, type Experience } from '../../data/resume'
 import { useReveal } from '../../hooks/useReveal'
 import { SectionLabel } from '../section_label'
@@ -48,17 +45,30 @@ const Job = ({
             <div
                 className={`border-line bg-panel/60 hover:border-signal/40 rounded-xl border transition-[opacity,border-color] duration-300 ${dimmed ? 'opacity-25' : ''}`}
             >
-                <button
-                    onClick={() => setOpen((o) => !o)}
-                    aria-expanded={open}
-                    aria-controls={panelId}
-                    className="flex w-full items-start gap-4 p-5 text-left"
-                >
-                    <Logo job={job} />
+                {/* The toggle's ::after stretches over the whole header, so a click
+                    anywhere expands the card; the links sit above it on z-10. */}
+                <div className="relative flex items-start gap-4 p-5 text-left">
+                    <a
+                        href={job.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`${job.company} website`}
+                        className="relative z-10 shrink-0 rounded-md transition hover:brightness-90"
+                    >
+                        <Logo job={job} />
+                    </a>
                     <div className="min-w-0 flex-1">
                         <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
                             <h3 className="text-lg font-semibold">
-                                {job.company}
+                                <a
+                                    href={job.link}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="group/link hover:text-signal relative z-10 inline-flex items-center gap-1 transition-colors"
+                                >
+                                    {job.company}
+                                    <ArrowUpRightIcon className="text-muted group-hover/link:text-signal h-4 w-4 transition-all group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5" />
+                                </a>
                             </h3>
                             <span className="text-muted font-mono text-xs whitespace-nowrap">
                                 {job.period}
@@ -69,10 +79,18 @@ const Job = ({
                             {job.headline}
                         </p>
                     </div>
-                    <ChevronDownIcon
-                        className={`text-muted mt-1 h-5 w-5 shrink-0 transition-transform duration-300 ${open ? 'rotate-180' : ''}`}
-                    />
-                </button>
+                    <button
+                        onClick={() => setOpen((o) => !o)}
+                        aria-expanded={open}
+                        aria-controls={panelId}
+                        aria-label={`${open ? 'Hide' : 'Show'} details for ${job.company}`}
+                        className="after:absolute after:inset-0 after:rounded-t-xl after:content-['']"
+                    >
+                        <ChevronDownIcon
+                            className={`text-muted mt-1 h-5 w-5 shrink-0 transition-transform duration-300 ${open ? 'rotate-180' : ''}`}
+                        />
+                    </button>
+                </div>
 
                 <div
                     id={panelId}
@@ -90,15 +108,9 @@ const Job = ({
                                     </li>
                                 ))}
                             </ul>
-                            <a
-                                href={job.link}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-muted hover:text-signal mt-4 inline-flex items-center gap-1.5 font-mono text-xs transition-colors"
-                            >
-                                {job.location} · visit site
-                                <ArrowTopRightOnSquareIcon className="h-3.5 w-3.5" />
-                            </a>
+                            <p className="text-muted mt-4 font-mono text-xs">
+                                {job.location}
+                            </p>
                         </div>
                     </div>
                 </div>
