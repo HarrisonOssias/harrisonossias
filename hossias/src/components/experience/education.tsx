@@ -1,3 +1,4 @@
+import { ArrowUpRightIcon } from '@heroicons/react/20/solid'
 import { EDUCATION } from '../../data/resume'
 import { useReveal } from '../../hooks/useReveal'
 import { SectionLabel } from '../section_label'
@@ -23,11 +24,19 @@ export const Education = () => {
                         className="reveal border-line bg-panel/60 hover:border-signal/40 rounded-xl border p-6 transition-colors"
                     >
                         <div className="flex items-start gap-4">
-                            <img
-                                src={d.logo}
-                                alt=""
-                                className="h-14 w-14 shrink-0 rounded-md bg-white object-contain p-1"
-                            />
+                            <a
+                                href={d.link}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label={`${d.school} website`}
+                                className="shrink-0 rounded-md transition hover:brightness-90"
+                            >
+                                <img
+                                    src={d.logo}
+                                    alt=""
+                                    className="h-14 w-14 rounded-md bg-white object-contain p-1"
+                                />
+                            </a>
                             <div className="min-w-0">
                                 <h3 className="text-lg leading-snug font-semibold">
                                     {d.degree}
@@ -36,7 +45,16 @@ export const Education = () => {
                                     {d.focus}
                                 </p>
                                 <p className="text-muted mt-1 font-mono text-xs">
-                                    {d.school} · {d.period}
+                                    <a
+                                        href={d.link}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="group/link hover:text-signal inline-flex items-center gap-0.5 transition-colors"
+                                    >
+                                        {d.school}
+                                        <ArrowUpRightIcon className="h-3 w-3 transition-transform group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5" />
+                                    </a>{' '}
+                                    · {d.period}
                                 </p>
                             </div>
                         </div>

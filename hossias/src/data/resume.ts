@@ -1,5 +1,6 @@
 /* Single source of truth for site content — mirrors public/Harrison_Ossias_Resume.pdf */
 
+import ableLogo from '../assets/logos/able.webp'
 import blueOceanLogo from '../assets/logos/blue_ocean.webp'
 import hyperionLogo from '../assets/logos/hyperion.webp'
 import broadridgeLogo from '../assets/logos/broadridge.webp'
@@ -28,6 +29,7 @@ export interface Degree {
     location: string
     period: string
     logo: string
+    link: string
     notes: string[]
     tags: string[]
 }
@@ -82,6 +84,7 @@ export const EXPERIENCE: Experience[] = [
         role: 'Full-Stack IoT & Telemetry Developer, Controls Team Lead',
         location: 'Toronto, ON',
         period: '10/2025 – Present',
+        logo: ableLogo,
         link: 'https://www.ableinnovations.com/',
         headline:
             'Shipped end-to-end robot telemetry (Rust/Python uplink over Zenoh → MQTT → AWS IoT Core, Flink on Confluent Kafka), cutting average latency from 30+ seconds to under 2 seconds with zero data loss.',
@@ -202,6 +205,7 @@ export const EDUCATION: Degree[] = [
         degree: 'MEng, Mechanical & Industrial Engineering',
         focus: 'Robotics',
         school: 'University of Toronto',
+        link: 'https://www.utoronto.ca/',
         location: 'Toronto, ON',
         period: '01/2025 – 08/2026',
         logo: uoftLogo,
@@ -215,6 +219,7 @@ export const EDUCATION: Degree[] = [
         degree: 'BTech, Automation Engineering',
         focus: 'Smart Systems & IoT Engineering',
         school: 'McMaster University',
+        link: 'https://www.mcmaster.ca/',
         location: 'Hamilton, ON',
         period: '09/2017 – 05/2022',
         logo: mcmasterLogo,
