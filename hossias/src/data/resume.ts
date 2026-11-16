@@ -1,5 +1,6 @@
 /* Single source of truth for site content — mirrors public/Harrison_Ossias_Resume.pdf */
 
+import ableLogo from '../assets/logos/able.webp'
 import blueOceanLogo from '../assets/logos/blue_ocean.webp'
 import hyperionLogo from '../assets/logos/hyperion.webp'
 import broadridgeLogo from '../assets/logos/broadridge.webp'
@@ -82,6 +83,7 @@ export const EXPERIENCE: Experience[] = [
         role: 'Full-Stack IoT & Telemetry Developer, Controls Team Lead',
         location: 'Toronto, ON',
         period: '10/2025 – Present',
+        logo: ableLogo,
         link: 'https://www.ableinnovations.com/',
         headline:
             'Shipped end-to-end robot telemetry (Rust/Python uplink over Zenoh → MQTT → AWS IoT Core, Flink on Confluent Kafka), cutting average latency from 30+ seconds to under 2 seconds with zero data loss.',
